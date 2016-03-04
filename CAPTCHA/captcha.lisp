@@ -19,32 +19,7 @@
 (defparameter *time-verbs* '("times" "multiplied by"))
 (defparameter *divide-verbs* '("divided by"))
 
-;; (defstruct clause ()
-;;   verb num nouns
-;;   (:documentation "A clause holds a verb, a number and a nound for converting a
-;;   number to a meaningful phrase."))
-
-;; (defmacro defclause (verb-name noun-list)
-;;   "Define a clause"
-;;   `(setf *clause-db* (cons (make-clause :verb ,verb-name
-;;                                         :num 0
-;;                                         :nouns ,noun-list)
-;;                            *clause-db*)))
-
-(defun print-clause (clause)
-  (let ((verb (clause-verb clause))
-        (num (clause-num clause))
-        (nouns (clause-nouns clause))
-        (nouns-length (length (clause-nouns clause))))
-    ))
-
-(defun string-list->string (string-list separator)
-  "Turn a list into a string"
-  (apply 'concatenate (cons 'string
-                            (mapcar (lambda (s)
-                                      (concatenate 'string s separator))
-                                    string-list))))
-(defun generate-arith-expr ()
+(defun generate-arith-expression ()
   (let* ((number1  (1+ (random +MAX-NUMBER+)))
          (number2  (1+ (random +MAX-NUMBER+)))
          (op (nth  (random (length *arith-ops*)) *arith-ops*)))
@@ -56,13 +31,13 @@
                (list number1 number2))
               (otherwise (list number1 number2))))))
 
-(defun calculate-arith (expr)
+(defun calculate (expr)
   "Calculate expression generated from generate-arith-expr."
   (apply (car expr) (cdr expr)))
 
-(defun is-answer-correct (ans expr)
+(defun answer-correct-p (ans expr)
   "Check whether user answer matched arithmetic expression."
-  (= ans (calculate-arith expr)))
+  (= ans (calculate expr)))
 
 (defun op->verb (op)
   (case op
