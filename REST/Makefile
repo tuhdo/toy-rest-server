@@ -1,8 +1,7 @@
 CC=gcc
 CPP=g++
 DEPS =
-# OBJ = Server.cpp 
-Connection.cpp Parser.cpp
+OBJ = Server.cpp Connection.cpp Parser.cpp
 
 all: main
 

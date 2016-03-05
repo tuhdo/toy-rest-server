@@ -119,12 +119,25 @@ int LispServerConnection::connect() {
 }
 
 int LispServerConnection::send(const std::string &msg) {
+    std::cout << "Send to lisp server msg: " << msg << " length: " << msg.length() << "\n";
+
     if (!write(socket, msg.c_str(), msg.length())){
         perror("cannot send request to Lisp server. Error");
         return 1;
     }
 
-    return ::close(socket);
+    return 0;
+}
+
+std::string LispServerConnection::receive() {
+    if (read(socket,buffer,255) < 0)
+        error("ERROR reading from socket");
+
+    ::close(socket);
+
+    std::string res(buffer);
+
+    return res;
 }
 
 LispServerConnection::LispServerConnection(const std::string address, int port) {
