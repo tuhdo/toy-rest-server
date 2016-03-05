@@ -66,3 +66,10 @@
          (op-verb (op->verb op))
          (end-question (op->end-question op)))
     (format t "~A ~d ~A, ~A ~d ~A, ~a " start-verb number1 object op-verb number2 pronoun end-question)))
+
+(defun start-echo-server (port)
+  "Listening on a port for a message, and print the received message."
+  (usocket:with-socket-listener (socket "127.0.0.1" port)
+    (usocket:wait-for-input socket)
+    (usocket:with-connected-socket (connection (usocket:socket-accept socket))
+      (format t "~a~%" (read-line (usocket:socket-stream connection))))))
