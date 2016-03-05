@@ -35,6 +35,10 @@ protected:
 class ServerConnection: public Connection
 {
 public:
+    const HttpMessage get_recv_msg() const {
+        return recv_msg;
+    }
+
     ServerConnection() {}
     ServerConnection(const std::string address, int port);
     virtual ~ServerConnection(){}
@@ -60,5 +64,7 @@ public:
     virtual ~LispServerConnection(){}
 
     int connect();
+    int send(const std::string &msg);
+    std::string receive();
     int close();
 };

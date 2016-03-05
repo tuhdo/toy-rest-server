@@ -67,9 +67,17 @@
          (end-question (op->end-question op)))
     (format t "~A ~d ~A, ~A ~d ~A, ~a " start-verb number1 object op-verb number2 pronoun end-question)))
 
+(defun generate-question ()
+  (expression->question (generate-arith-expression)))
+
 (defun start-echo-server (port)
-  "Listening on a port for a message, and print the received message."
+  "Listening on a port for a message, and response the with a question."
   (usocket:with-socket-listener (socket "127.0.0.1" port)
     (usocket:wait-for-input socket)
     (usocket:with-connected-socket (connection (usocket:socket-accept socket))
-      (format t "~a~%" (read-line (usocket:socket-stream connection))))))
+      (let ((msg (read-line (usocket:socket-stream connection))))
+        (print msg)
+        (cond
+          ((string-equal msg "GET")
+           (print (generate-question) (usocket:socket-stream connection)))
+          (t "Undefined request."))))))

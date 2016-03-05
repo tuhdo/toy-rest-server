@@ -55,10 +55,15 @@ int ServerConnection::accept() {
 int ServerConnection::respond(const std::string &response) {
     int n;
 
-    n = write(client_socket, response.c_str(), response.length());
+    Parser::parse(recv_msg);
 
-    if (n < 0)
-        error("ERROR writing to socket");
+    if (recv_msg.get_uri().compare("/question") == 0) {
+
+        n = write(client_socket, response.c_str(), response.length());
+
+        if (n < 0)
+            error("ERROR writing to socket");
+    }
 
     return ::close(client_socket);
 }
@@ -110,13 +115,16 @@ int LispServerConnection::connect() {
         return 1;
     }
 
-    printf("writing to lisp server\n");
-
-    write(socket, "hello lispi\n", 13);
-
-    ::close(socket);
-
     return 0;
+}
+
+int LispServerConnection::send(const std::string &msg) {
+    if (!write(socket, msg.c_str(), msg.length())){
+        perror("cannot send request to Lisp server. Error");
+        return 1;
+    }
+
+    return ::close(socket);
 }
 
 LispServerConnection::LispServerConnection(const std::string address, int port) {

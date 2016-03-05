@@ -11,8 +11,8 @@ static const std::string get_response =
     "HTTP/1.0 200 OK\r\n"
 "Content-Length: 5\r\n"
 "Content-Type: text/html\r\n\r\n"
-"<html><body>POST example."
-"<form method=\"POST\" action=\"/handle_post_request\">"
+"<html><body>Question: "
+    "<form method=\"PUT\" action=\"/answer\">"
 "Input 2: <input type=\"text\" name=\"input_2\" /> <br/>"
 "<input type=\"submit\" />"
 "</form></body></html>";
@@ -27,4 +27,6 @@ public:
 private:
     ServerConnection server_conn;  // connect to the outside world
     LispServerConnection lisp_conn; // connect to Lisp server as a client
+
+    std::string compose_response();
 };
