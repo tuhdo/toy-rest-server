@@ -1,0 +1,24 @@
+- Load "quicklisp":
+#+BEGIN_SRC sh
+curl -O https://beta.quicklisp.org/quicklisp.lisp
+sbcl --load quicklisp.lisp
+#+END_SRC
+
+- In SBCL prompt, run:
+
+#+BEGIN_SRC lisp
+(quicklisp-quickstart:install)
+#+END_SRC
+
+Then run:
+
+#+BEGIN_SRC lisp
+(ql:quickload "fiveam")
+#+END_SRC
+
+Finally, always load quicklisp and initialize its packages:
+
+#+BEGIN_SRC lisp
+(ql:add-to-init-file)
+#+END_SRC
+
