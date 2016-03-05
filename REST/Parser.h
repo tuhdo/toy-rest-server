@@ -1,30 +1,20 @@
 #include "HttpMessage.h"
+#include <string>
+
+class HttpMessage;
 
 class Parser
 {
 public:
-    Parser();
+    Parser(){}
 
-    void parse(HttpMessage msg);
-    virtual ~Parser();
+    static void parse(HttpMessage &msg);
+
+    virtual ~Parser() {}
+private:
+    static std::size_t pos; // current position in raw string the parser is stopping
+    static void parse_get(HttpMessage &msg);
+    static void parse_post(HttpMessage &msg);
 };
 
-class GetParser
-{
-public:
-    GetParser();
-    virtual ~GetParser();
 
-    void parse(HttpMessage msg);
-};
-
-class PostParser
-{
-public:
-    PostParser();
-    virtual ~PostParser();
-
-    void parse(HttpMessage msg);
-
-    int parse_captcha_data();
-};

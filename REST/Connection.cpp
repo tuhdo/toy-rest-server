@@ -32,9 +32,7 @@ int ServerConnection::bind() {
     return 0;
 }
 
-int ServerConnection::accept(const std::string &response) {
-    int n;
-
+int ServerConnection::accept() {
     cli_len = sizeof(cli_addr);
 
     client_socket = ::accept(socket, (struct sockaddr *) &cli_addr, &cli_len);
@@ -43,20 +41,26 @@ int ServerConnection::accept(const std::string &response) {
         error("ERROR on accept");
 
     bzero(buffer,256);
-    n = read(client_socket,buffer,255);
 
-    if (n < 0)
+    if (read(client_socket,buffer,255) < 0)
         error("ERROR reading from socket");
 
+    recv_msg.set_raw_msg(buffer);
+
     printf("Here is the message: %s\n",buffer);
+
+    return 0;
+}
+
+int ServerConnection::respond(const std::string &response) {
+    int n;
+
     n = write(client_socket, response.c_str(), response.length());
 
     if (n < 0)
         error("ERROR writing to socket");
 
-    ::close(client_socket);
-
-    return 0;
+    return ::close(client_socket);
 }
 
 int ServerConnection::close() {

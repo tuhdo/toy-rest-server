@@ -8,6 +8,8 @@
 #include <errno.h>
 #include <signal.h>
 
+#include "Parser.h"
+
 class Connection
 {
 public:
@@ -38,13 +40,16 @@ public:
     virtual ~ServerConnection(){}
 
     int bind();
-    int accept(const std::string &response);
-    int process_captcha_input();
+    int accept();
+    int respond(const std::string &response);
     int close();
+
+    int process_captcha_input();
 private:
     int client_socket;
     socklen_t cli_len;
     struct sockaddr_in cli_addr;
+    HttpMessage recv_msg;
 };
 
 class LispServerConnection: public Connection

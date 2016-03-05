@@ -1,11 +1,8 @@
 #include "Connection.h"
-#include "HttpRequest.h"
-#include "Parser.h"
 
 static const char *html_form =
     "<html><body>POST example."
     "<form method=\"PUT\" action=\"/answer\">"
-    "Input 1: <input type=\"text\" name=\"input_1\" /> <br/>"
     "Input 2: <input type=\"text\" name=\"input_2\" /> <br/>"
     "<input type=\"submit\" />"
     "</form></body></html>";

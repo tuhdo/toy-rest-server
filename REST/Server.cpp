@@ -11,6 +11,7 @@ void Server::run() {
     server_conn.listen();
 
     for (;; ) {
-        server_conn.accept(get_response);
+        if (!server_conn.accept())
+            server_conn.respond(get_response);
     }
 }
