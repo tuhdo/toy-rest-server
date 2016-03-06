@@ -7,8 +7,10 @@
 * Lisp server setup 
 - Download and load Quicklisp into SBCL:
 
-$ curl -O https://beta.quicklisp.org/quicklisp.lisp
-$ sbcl --load quicklisp.lisp
+curl -O https://beta.quicklisp.org/quicklisp.lisp
+sbcl --load quicklisp.lisp
+
+SBCL should be run at the root of the project (where this file is).
 
 - In SBCL prompt, run:
 
@@ -26,12 +28,15 @@ $ sbcl --load quicklisp.lisp
 
 - Load the Lisp generator server:
 
-(load "captcha.lisp")
+(load "CAPTCHA/captcha.lisp")
 
 - After the environment is setup, we run the Lisp server and wait for C++
   server:
 
 (start-captcha-server 8100)
+
+Now, the server blocks the REPL to wait for incomming messages from the C++ web
+server. Leave the server be and open a new terminal.
 
 * C++ server setup
 - Build the C++ server:
@@ -56,9 +61,11 @@ make
 
 ** Lisp
 
-- To run test in Lisp, load the file captcha_test.lisp in SBCL:
+- To run test in Lisp and assume SBCL is ran at the location of this Howto.txt
+  file, load the file captcha_test.lisp in SBCL:
 
-  (load "captcha_test.lisp")
+  (load "CAPTCHA/captcha.lisp") ;; only if a new instance of SBCL is ran again
+  (load "CAPTCHA/captcha_test.lisp")
 
 - Then run the defined test suite:
 
