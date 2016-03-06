@@ -1,3 +1,5 @@
+(ql:quickload "usocket")
+
 (defpackage captcha
   (:use :common-lisp))
 
@@ -18,9 +20,10 @@
 (defparameter *pronouns* '("of them" "them all"))
 (defparameter *first-operand-verbs* '("start with" "having bought" "having" "acquired" "given" "there are" "you have"))
 (defparameter *plus-verbs* '("received another" "picked up" "and you was gifted"))
-(defparameter *minus-verbs* '("dropped" "ate" "gave away"))
+(defparameter *minus-verbs* '("dropped" "ate" "you gave away"))
 (defparameter *time-verbs* '("times" "multiplied by"))
 (defparameter *divide-verbs* '("divided by"))
+(defparameter *number-text* '("one" "two" "three" "four" "five" "six" "seven" "eight" "nine" "ten"))
 
 (defun generate-arith-expression ()
   (let* ((number1  (1+ (random +MAX-NUMBER+)))
@@ -44,6 +47,9 @@
        "T"
        "F"))
 
+(defun number->text (num)
+  (nth (1- num) *number-text*))
+
 (defun op->verb (op)
   (case op
     ('+ (nth (random (length *plus-verbs*)) *plus-verbs*))
@@ -63,14 +69,20 @@
 (defun expression->question (expr)
   "Turn an aritmetic expression into a question."
   (let* ((op (car expr))
-         (number1 (cadr expr))
-         (number2 (caddr expr))
+         (number1 (list (cadr expr) (number->text (cadr expr))))
+         (number2 (list (caddr expr) (number->text (caddr expr))))
          (pronoun "of them")
          (start-verb (nth (random (length *first-operand-verbs*)) *first-operand-verbs*))
          (object (nth (random (length *nouns*)) *nouns*))
          (op-verb (op->verb op))
          (end-question (op->end-question op)))
-    (format nil "~A ~d ~A, ~A ~d ~A, ~a" start-verb number1 object op-verb number2 pronoun end-question)))
+    (format nil "~A ~d ~A, ~A ~d ~A, ~a"
+            start-verb
+            (nth (random 2) number1)
+            object op-verb
+            (nth (random 2) number2)
+            pronoun
+            end-question)))
 
 (defun generate-question ()
   (setf *current-expr* (generate-arith-expression))
