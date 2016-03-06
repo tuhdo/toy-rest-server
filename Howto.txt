@@ -1,0 +1,96 @@
+* Prerequisite
+- GNU Make
+- A C++ compiler, i.e. g++, clang.
+- SBCL - Steel Bank Common Lisp (http://www.sbcl.org)
+- A POSIX compliant system like GNU Linux or OSX.
+
+* Lisp server setup 
+- Download and load Quicklisp into SBCL:
+
+$ curl -O https://beta.quicklisp.org/quicklisp.lisp
+$ sbcl --load quicklisp.lisp
+
+- In SBCL prompt, run:
+
+(quicklisp-quickstart:install)
+
+- Then run:
+
+(ql:quickload "fiveam")
+(ql:quickload "usocket")
+
+- Always load quicklisp and initialize its packages by adding init
+  routines to .sbclrc file:
+
+(ql:add-to-init-file)
+
+- Load the Lisp generator server:
+
+(load "captcha.lisp")
+
+- After the environment is setup, we run the Lisp server and wait for C++
+  server:
+
+(start-captcha-server 8100)
+
+* C++ server setup
+- Build the C++ server:
+
+make
+
+- Run the built server in build/ directory:
+
+./build/main 8080 8100
+
+8080 is the address for our web server; 8100 is the address of the Lisp server.
+
+- Open a web browser like Firefox, open the url http://localhost:8080/question
+  to start getting question.
+
+- Refresh the page for different questions.
+
+- When the question is answered, the returned response is either 200 with
+  "Correct" text displayed, or 400 with "Bad Answer" displayed.
+
+* Test running
+
+** Lisp
+
+- To run test in Lisp, load the file captcha_test.lisp in SBCL:
+
+  (load "captcha_test.lisp")
+
+- Then run the defined test suite:
+
+  (fiveam:run! 'captcha-testsuite)
+
+- The output looks like this:
+
+Running test suite CAPTCHA-TESTSUITE
+ Running test GENERATE-ARITH-EXPRESSION .....
+ Running test NUMBER->TEXT ...........
+ Running test OP->VERB ....
+ Running test OP->END-QUESTION ....
+ Running test CALCULATE .....
+ Running test EXPRESSION->QUESTION .
+ Running test GENERATE-QUESTION ....
+ Did 34 checks.
+    Pass: 34 (100%)
+    Skip: 0 ( 0%)
+    Fail: 0 ( 0%)
+
+** C++
+
+- Build the test binary:
+
+make test
+
+- Run the test suite:
+
+./build/test
+
+- The output looks like this:
+
+===============================================================================
+All tests passed (4 assertions in 1 test case)
+  
