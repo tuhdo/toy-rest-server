@@ -89,8 +89,8 @@
              (let ((q (generate-question)))
                (print q)
                (format (usocket:socket-stream connection) q)
-               (force-output (usocket:socket-stream connection))))
+               (finish-output (usocket:socket-stream connection))))
             (t
              (format (usocket:socket-stream connection)
                      (answer-correct-p (parse-integer msg) *current-expr*))
-             (force-output (usocket:socket-stream connection)))))))))
+             (finish-output (usocket:socket-stream connection)))))))))
