@@ -34,8 +34,8 @@ Return a list that represent an expression i.e. '(+ 5 6)."
          (op (nth  (random (length *arith-ops*)) *arith-ops*)))
     (append (list op)
             (case op
-              ('- (if (> number1 number2) (list number1 number2) (list number2 number1)))
-              ('/
+              (- (if (> number1 number2) (list number1 number2) (list number2 number1)))
+              (/
                (setf number1 (* number2 (1+ (random +MAX-NUMBER+))))
                (list number1 number2))
               (otherwise (list number1 number2))))))
@@ -73,10 +73,10 @@ a human reader.
 
 Return a string."
   (case op
-    ('+ (nth (random (length *plus-verbs*)) *plus-verbs*))
-    ('- (nth (random (length *minus-verbs*)) *minus-verbs*))
-    ('* (nth (random (length *time-verbs*)) *time-verbs*))
-    ('/ (nth (random (length *divide-verbs*)) *divide-verbs*))
+    (+ (nth (random (length *plus-verbs*)) *plus-verbs*))
+    (- (nth (random (length *minus-verbs*)) *minus-verbs*))
+    (* (nth (random (length *time-verbs*)) *time-verbs*))
+    (/ (nth (random (length *divide-verbs*)) *divide-verbs*))
     (otherwise (error "Operation not supported."))))
 
 (defun op->end-question (op)
@@ -85,10 +85,10 @@ Return a string."
 
 Return a string."
   (case op
-    ('+ "how many do you have in total?")
-    ('- "how many are left?")
-    ('* "what is the result?")
-    ('/ "what is the result?")
+    (+ "how many do you have in total?")
+    (- "how many are left?")
+    (* "what is the result?")
+    (/ "what is the result?")
     (otherwise (error "Operation not supported."))))
 
 (defun expression->question (expr)
