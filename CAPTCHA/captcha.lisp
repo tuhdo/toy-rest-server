@@ -124,7 +124,7 @@ Return a string."
   (setf *current-expr* (generate-arith-expression))
   (expression->question *current-expr*))
 
-(defun start-echo-server (port)
+(defun start-captcha-server (port)
   "Listening on a port for a message, and response the with a question."
   (usocket:with-socket-listener (socket "127.0.0.1" port)
     (loop
