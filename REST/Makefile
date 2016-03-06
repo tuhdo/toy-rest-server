@@ -1,18 +1,24 @@
-CC=gcc
 CPP=g++
-DEPS =
-OBJ = Server.cpp Connection.cpp Parser.cpp
+BUILD_DEST= build
+INCLUDE = include
+SRCS = $(wildcard *.cpp)
+MAINS = $(BUILD_DEST)/main.o $(BUILD_DEST)/test.o
+OBJS := $(patsubst %.cpp, $(BUILD_DEST)/%.o, $(SRCS))
+OBJS := $(filter-out $(MAINS), $(OBJS))
 
-all: main
+all: create_build_dir test main
 
-main: $(OBJ)
-	g++ -o $@  $^ main.cpp
+main: $(OBJS)
+	g++ -o $(BUILD_DEST)/$@ $(OBJS) main.cpp
 
-%.o: %.cpp $(DEPS)
-	$(CPP) -c -o $@ $<
+test: $(OBJS)
+	g++ -o $(BUILD_DEST)/$@ $(OBJS) test.cpp
 
-test:  Parser.cpp
-	g++ -o $@ test.cpp $^
+create_build_dir:
+	mkdir -p $(BUILD_DEST)
+
+$(BUILD_DEST)/%.o: %.cpp
+	$(CPP) -c  $< -o $@
 
 clean:
-	rm -rf *.o
+	rm -rf build
