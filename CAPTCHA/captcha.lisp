@@ -26,6 +26,9 @@
 (defparameter *number-text* '("one" "two" "three" "four" "five" "six" "seven" "eight" "nine" "ten"))
 
 (defun generate-arith-expression ()
+  "Generate a 2-operand arithmetic expression as a list.
+
+Return a list that represent an expression i.e. '(+ 5 6)."
   (let* ((number1  (1+ (random +MAX-NUMBER+)))
          (number2  (1+ (random +MAX-NUMBER+)))
          (op (nth  (random (length *arith-ops*)) *arith-ops*)))
@@ -38,36 +41,61 @@
               (otherwise (list number1 number2))))))
 
 (defun calculate (expr)
-  "Calculate expression generated from generate-arith-expr."
+  "Calculate expression generated from generate-arith-expr.
+`expr' is a list that represent an expression i.e. '(+ 5 6).
+
+Return result of the expression, which is a number of type integer."
   (apply (car expr) (cdr expr)))
 
 (defun answer-correct-p (ans expr)
-  "Check whether user answer matched arithmetic expression."
+  "Check whether user answer matched arithmetic expression.
+`ans' is user-supplied answer, sent by the web server.
+`expr' is a list that represent an expression i.e. '(+ 5 6).
+
+Return a string, either \"T\" or \"F\"."
   (if  (= ans (calculate expr))
        "T"
        "F"))
 
 (defun number->text (num)
+  "Convert a number from 1 to 10 into text form i.e. 1 -> one, 2 -> two....
+
+`num' is an integer.
+
+Return a string."
   (nth (1- num) *number-text*))
 
 (defun op->verb (op)
+  "Convert an operation to verb phrase from to make it more meaningful for
+a human reader.
+
+`op' is one of four symbols '+, '-, '*, '/
+
+Return a string."
   (case op
     ('+ (nth (random (length *plus-verbs*)) *plus-verbs*))
     ('- (nth (random (length *minus-verbs*)) *minus-verbs*))
     ('* (nth (random (length *time-verbs*)) *time-verbs*))
     ('/ (nth (random (length *divide-verbs*)) *divide-verbs*))
-    (otherwise (error "Operator not supported."))))
+    (otherwise (error "Operation not supported."))))
 
 (defun op->end-question (op)
+  "Generate a question clause to be placed at the end, based on an operation.
+`op' is one of four symbols '+, '-, '*, '/.
+
+Return a string."
   (case op
     ('+ "how many do you have in total?")
     ('- "how many are left?")
     ('* "what is the result?")
     ('/ "what is the result?")
-    (otherwise (error "Operator not supported."))))
+    (otherwise (error "Operation not supported."))))
 
 (defun expression->question (expr)
-  "Turn an aritmetic expression into a question."
+  "Turn an arithmetic expression into a question.
+A number less than 10 can be either in its numeric form or text form.
+
+`expr' is a list that contains a math expression i.e. '(+ 5 6)"
   (let* ((op (car expr))
          (number1 (list (cadr expr) (number->text (cadr expr))))
          (number2 (list (caddr expr) (number->text (caddr expr))))
@@ -90,6 +118,9 @@
             end-question)))
 
 (defun generate-question ()
+  "Top level question for generating a question.
+
+Return a string."
   (setf *current-expr* (generate-arith-expression))
   (expression->question *current-expr*))
 
