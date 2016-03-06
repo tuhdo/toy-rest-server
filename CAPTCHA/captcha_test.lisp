@@ -4,8 +4,6 @@
   (:use :common-lisp
         :fiveaM))
 
-(load "captcha.lisp")
-
 (fiveam:def-suite captcha-testsuite :description "The test suite for captcha generator.")
 
 (fiveam:in-suite captcha-testsuite)
