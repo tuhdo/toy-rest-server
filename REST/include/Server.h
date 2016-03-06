@@ -8,8 +8,8 @@ public:
 
     void run();
 private:
-    ServerConnection server_conn;  // connect to the outside world
-    LispServerConnection lisp_conn; // connect to Lisp server as a client
+    IncomingConnection server_conn;  // connect to the outside world
+    OutgoingConnection lisp_conn; // connect to Lisp server as a client
 
     std::string compose_response();
 };

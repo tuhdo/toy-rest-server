@@ -13,6 +13,8 @@
 
 #define BUF_SIZE 4096
 
+// Represent a connection between two sockets.
+// Each class has a socket and is responsible for 
 class Connection
 {
 public:
@@ -35,23 +37,21 @@ protected:
     // static void sigint_handler(int signo);
 };
 
-class ServerConnection: public Connection
+class IncomingConnection: public Connection
 {
 public:
     const HttpMessage get_recv_msg() const {
         return recv_msg;
     }
 
-    ServerConnection() {}
-    ServerConnection(const std::string address, int port);
-    virtual ~ServerConnection(){}
+    IncomingConnection() {}
+    IncomingConnection(const std::string address, int port);
+    virtual ~IncomingConnection(){}
 
     int bind();
     int accept();
     int respond(const std::string &response);
     int close();
-
-    int process_captcha_input();
 private:
     int client_socket;
     socklen_t cli_len;
@@ -59,12 +59,12 @@ private:
     HttpMessage recv_msg;
 };
 
-class LispServerConnection: public Connection
+class OutgoingConnection: public Connection
 {
 public:
-    LispServerConnection() {}
-    LispServerConnection(const std::string address, int port);
-    virtual ~LispServerConnection(){}
+    OutgoingConnection() {}
+    OutgoingConnection(const std::string address, int port);
+    virtual ~OutgoingConnection(){}
 
     int connect();
     int send(const std::string &msg);

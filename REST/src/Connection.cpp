@@ -11,18 +11,14 @@ void Connection::error(const std::string &msg) {
     exit(1);
 }
 
-int ServerConnection::process_captcha_input() {
-    return 0;
-}
-
-int ServerConnection::bind() {
+int IncomingConnection::bind() {
     if (::bind(socket, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
         error("ERROR on binding");
 
     return 0;
 }
 
-int ServerConnection::accept() {
+int IncomingConnection::accept() {
     cli_len = sizeof(cli_addr);
 
     client_socket = ::accept(socket, (struct sockaddr *) &cli_addr, &cli_len);
@@ -43,7 +39,7 @@ int ServerConnection::accept() {
     return 0;
 }
 
-int ServerConnection::respond(const std::string &response) {
+int IncomingConnection::respond(const std::string &response) {
     int n;
 
     if (recv_msg.get_uri().compare("/question") == 0) {
@@ -57,7 +53,7 @@ int ServerConnection::respond(const std::string &response) {
     return ::close(client_socket);
 }
 
-int ServerConnection::close() {
+int IncomingConnection::close() {
     int n;
 
     n = ::close(socket);
@@ -69,7 +65,7 @@ int ServerConnection::close() {
     return 0;
 }
 
-ServerConnection::ServerConnection(std::string message, int port) {
+IncomingConnection::IncomingConnection(std::string message, int port) {
     socket = ::socket(AF_INET, SOCK_STREAM, 0);
 
     if (socket < 0)
@@ -82,7 +78,7 @@ ServerConnection::ServerConnection(std::string message, int port) {
     serv_addr.sin_port = htons(port);
 }
 
-int LispServerConnection::connect() {
+int OutgoingConnection::connect() {
     //Create socket
     socket = ::socket(AF_INET , SOCK_STREAM , 0);
 
@@ -105,7 +101,7 @@ int LispServerConnection::connect() {
     return 0;
 }
 
-int LispServerConnection::send(const std::string &msg) {
+int OutgoingConnection::send(const std::string &msg) {
     if (!write(socket, msg.c_str(), msg.length())){
         ::perror("cannot send request to Lisp server. Error");
         return 1;
@@ -114,7 +110,7 @@ int LispServerConnection::send(const std::string &msg) {
     return 0;
 }
 
-std::string LispServerConnection::receive() {
+std::string OutgoingConnection::receive() {
     if (read(socket,buffer,255) < 0)
         error("ERROR reading from socket");
 
@@ -125,11 +121,11 @@ std::string LispServerConnection::receive() {
     return res;
 }
 
-LispServerConnection::LispServerConnection(const std::string address, int port) {
+OutgoingConnection::OutgoingConnection(const std::string address, int port) {
     this->address = address;
     this->port = port;
 }
 
-int LispServerConnection::close() {
+int OutgoingConnection::close() {
     return ::close(socket);
 }

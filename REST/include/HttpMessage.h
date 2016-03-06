@@ -1,5 +1,6 @@
 #include <string>
 
+// Encapsulate the information components from HttpRequest
 class HttpMessage
 {
 public:
