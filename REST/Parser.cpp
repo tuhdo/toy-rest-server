@@ -8,7 +8,6 @@ void Parser::parse(HttpMessage &msg) {
 
     pos = msg_str.find("GET");
     if (pos != std::string::npos) {
-        std::cout << "Going to set GET" << std::endl;
         msg.set_method("GET");
         parse_get(msg);
 
@@ -35,8 +34,6 @@ void Parser::parse_get(HttpMessage &msg) {
 
     std::string raw_msg = msg.get_raw_msg();
     int length = raw_msg.length();
-
-    std::cout << "length is " << length << "\n";
 
     pos = raw_msg.find("/");
     end_pos = raw_msg.find(" ", pos);

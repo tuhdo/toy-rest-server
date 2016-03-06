@@ -1,9 +1,10 @@
+#include <iostream>
 #include "Server.h"
 
 int main(int argc, char *argv[])
 {
     if (argc < 3) {
-        fprintf(stderr,"ERROR, no server port and Lisp server pot provided\n");
+        std::cerr << "ERROR, no server port and Lisp server pot provided\n";
         exit(1);
     }
 

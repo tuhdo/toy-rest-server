@@ -43,8 +43,6 @@ std::string Server::compose_response() {
         lisp_conn.send(send_msg + "\n");
         result = lisp_conn.receive();
 
-        std::cout << "Result: " << result[0] << "\n";
-
         if (result[0] == 'T')
             response = "HTTP/1.0 200 OK\r\n"
                 "Content-Length: 100\r\n"

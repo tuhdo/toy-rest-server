@@ -1,23 +1,13 @@
 #include "Connection.h"
 
-// static int socket = 0, port = 0;
-
-// void Connection::sigint_handler(int signo){
-//     this->close();
-//     exit(1);
-// }
-
-Connection::Connection(const std::string address, int port):address(address), port(port) {
-    // if (signal(SIGINT, sigint_handler) == SIG_ERR)
-    //     exit(1);
-}
+Connection::Connection(const std::string address, int port):address(address), port(port) {}
 
 int Connection::listen() {
     return ::listen(socket, 5);
 }
 
 void Connection::error(const std::string &msg) {
-    perror(msg.c_str());
+    ::perror(msg.c_str());
     exit(1);
 }
 
@@ -40,7 +30,7 @@ int ServerConnection::accept() {
     if (client_socket < 0)
         error("ERROR on accept");
 
-    bzero(buffer, BUF_SIZE);
+    memset(&buffer, 0, BUF_SIZE);
 
     if (read(client_socket,buffer,BUF_SIZE) < 0)
         error("ERROR reading from socket");
@@ -71,11 +61,9 @@ int ServerConnection::close() {
     int n;
 
     n = ::close(socket);
-
     if (n) return n;
 
     n = ::close(client_socket);
-
     if (n) return n;
 
     return 0;
@@ -83,22 +71,22 @@ int ServerConnection::close() {
 
 ServerConnection::ServerConnection(std::string message, int port) {
     socket = ::socket(AF_INET, SOCK_STREAM, 0);
+
     if (socket < 0)
         error("ERROR opening socket");
 
-    bzero((char *) &serv_addr, sizeof(serv_addr));
+    memset(&serv_addr, 0, sizeof(serv_addr));
 
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = INADDR_ANY;
     serv_addr.sin_port = htons(port);
 }
-#include <iostream>
+
 int LispServerConnection::connect() {
     //Create socket
     socket = ::socket(AF_INET , SOCK_STREAM , 0);
 
     printf("lisp port: %d\n", port);
-    std::cout  << "address is" << address << "\n";
 
     if (socket == -1) {
         printf("Could not create socket");
@@ -110,7 +98,7 @@ int LispServerConnection::connect() {
 
     //Connect to remote server
     if (::connect(socket , (struct sockaddr *)&serv_addr , sizeof(serv_addr)) < 0) {
-        perror("connect failed. Error");
+        ::perror("connect failed. Error");
         return 1;
     }
 
@@ -118,10 +106,8 @@ int LispServerConnection::connect() {
 }
 
 int LispServerConnection::send(const std::string &msg) {
-    std::cout << "Send to lisp server msg: " << msg << " length: " << msg.length() << "\n";
-
     if (!write(socket, msg.c_str(), msg.length())){
-        perror("cannot send request to Lisp server. Error");
+        ::perror("cannot send request to Lisp server. Error");
         return 1;
     }
 
