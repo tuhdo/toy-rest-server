@@ -16,18 +16,47 @@ void Server::run() {
 }
 
 std::string Server::compose_response() {
+    std::string send_msg, method = server_conn.get_recv_msg().get_method();
+    std::string response;
+
     lisp_conn.connect();
-    lisp_conn.send(server_conn.get_recv_msg().get_method() + "\n");
-    std::string response =
-        "HTTP/1.0 200 OK\r\n"
-        "Content-Length: 5\r\n"
-        "Content-Type: text/html\r\n\r\n"
-        "<html><body>Question: "
-        +  lisp_conn.receive() +
-        "<form method=\"PUT\" action=\"/answer\">"
-        "Input 2: <input type=\"text\" name=\"input_2\" /> <br/>"
-        "<input type=\"submit\" />"
-        "</form></body></html>";
+
+    if (method.compare("GET") == 0) {
+        send_msg = server_conn.get_recv_msg().get_method();
+        lisp_conn.send(send_msg + "\n");
+
+        response = "HTTP/1.0 200 OK\r\n"
+            "Content-Length: 100\r\n"
+            "Content-Type: text/html\r\n\r\n"
+            "<html><body>Question: "
+            + lisp_conn.receive()  +
+            "<form method=\"post\" action=\"/answer\">"
+            "Answer: <input type=\"text\" name=\"captcha_result\" /> <br/>"
+            "<input type=\"submit\" />"
+            "</form></body></html>";
+
+        return response;
+    }
+    else
+        send_msg = server_conn.get_recv_msg().get_answer();
+
+    lisp_conn.send(send_msg + "\n");
+    std::string result = lisp_conn.receive();
+
+    std::cout << "Result: " << result[0] << "\n";
+
+    if (result[0] == 'T')
+        response = "HTTP/1.0 200 OK\r\n"
+            "Content-Length: 100\r\n"
+            "Content-Type: text/html\r\n\r\n"
+            "<html><body><h1>Correct</h1>"
+            "</body></html>";
+    else
+        response = "HTTP/1.0 400 Bad Answer\r\n"
+            "Content-Length: 100\r\n"
+            "Content-Type: text/html\r\n\r\n"
+            "<html><body><h1>Bad Answer</h1>"
+            "</body></html>";
 
     return response;
 }

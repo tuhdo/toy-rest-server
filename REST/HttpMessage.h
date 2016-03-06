@@ -11,12 +11,12 @@ public:
 
     virtual ~HttpMessage() {}
 
-    const std::string get_captcha() const {
-        return captcha;
+    const std::string get_answer() const {
+        return answer;
     }
 
-    void set_captcha(const std::string captcha) {
-        this->captcha = captcha;
+    void set_answer(const std::string answer) {
+        this->answer = answer;
     }
 
     const std::string get_uri() const {
@@ -46,5 +46,5 @@ private:
     std::string raw_msg;
     std::string method;
     std::string uri;
-    std::string captcha;
+    std::string answer;
 };

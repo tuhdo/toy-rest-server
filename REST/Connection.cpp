@@ -40,22 +40,21 @@ int ServerConnection::accept() {
     if (client_socket < 0)
         error("ERROR on accept");
 
-    bzero(buffer,256);
+    bzero(buffer, BUF_SIZE);
 
-    if (read(client_socket,buffer,255) < 0)
+    if (read(client_socket,buffer,BUF_SIZE) < 0)
         error("ERROR reading from socket");
 
     recv_msg.set_raw_msg(buffer);
+    Parser::parse(recv_msg);
 
-    printf("Here is the message: %s\n",buffer);
+    printf("Here is the message: %s\n\n",buffer);
 
     return 0;
 }
 
 int ServerConnection::respond(const std::string &response) {
     int n;
-
-    Parser::parse(recv_msg);
 
     if (recv_msg.get_uri().compare("/question") == 0) {
 

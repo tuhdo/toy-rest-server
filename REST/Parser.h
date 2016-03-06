@@ -1,5 +1,5 @@
-#include "HttpMessage.h"
 #include <string>
+#include "HttpMessage.h"
 
 class HttpMessage;
 
@@ -16,5 +16,3 @@ private:
     static void parse_get(HttpMessage &msg);
     static void parse_post(HttpMessage &msg);
 };
-
-

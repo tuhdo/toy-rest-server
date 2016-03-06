@@ -1,5 +1,5 @@
-#include "Parser.h"
 #include <iostream>
+#include "Parser.h"
 
 std::size_t Parser::pos = std::string::npos;
 
@@ -22,6 +22,12 @@ void Parser::parse(HttpMessage &msg) {
 
         return;
     }
+
+    std::string raw_msg = msg.get_raw_msg();
+    std::size_t end_pos;
+    pos = raw_msg.find("/");
+    end_pos = raw_msg.find(" ", pos);
+    msg.set_uri(raw_msg.substr(pos, end_pos - pos));
 }
 
 void Parser::parse_get(HttpMessage &msg) {
@@ -40,31 +46,10 @@ void Parser::parse_get(HttpMessage &msg) {
 }
 
 void Parser::parse_post(HttpMessage &msg) {
-    
+    std::string raw_msg = msg.get_raw_msg();
+    int length = raw_msg.length();
+
+    pos = raw_msg.find("captcha_result", pos);
+    pos = raw_msg.find("=", pos);
+    msg.set_answer(raw_msg.substr(pos + 1));
 }
-
-// void GetParser::parse(HttpMessage msg) {
-    
-// }
-
-// void GetParser::~GetParser() {
-    
-// }
-
-// GetParser::GetParser() {
-    
-// }int PostParser::parse_captcha_data() {
-//     return 0;
-// }
-
-// void PostParser::parse(HttpMessage msg) {
-    
-// }
-
-// void PostParser::~PostParser() {
-    
-// }
-
-// PostParser::PostParser() {
-    
-// }

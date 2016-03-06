@@ -1,14 +1,5 @@
 #include "Connection.h"
 
-static const char *html_form =
-    "<html><body>POST example."
-    "<form method=\"PUT\" action=\"/answer\">"
-    "Answer: <input type=\"text\" name=\"answer\" /> <br/>"
-    "<input type=\"submit\" />"
-    "</form></body></html>";
-
-static const 
-
 class Server
 {
 public:

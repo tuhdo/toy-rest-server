@@ -10,6 +10,8 @@
 
 #include "Parser.h"
 
+#define BUF_SIZE 4096
+
 class Connection
 {
 public:
@@ -24,7 +26,7 @@ protected:
     // instead of simple integer.
     int socket, port;
     std::string address;
-    char buffer[256];
+    char buffer[BUF_SIZE];
     struct sockaddr_in serv_addr;
 
     void error(const std::string &msg);

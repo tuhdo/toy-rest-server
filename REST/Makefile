@@ -6,7 +6,7 @@ OBJ = Server.cpp Connection.cpp Parser.cpp
 all: main
 
 main: $(OBJ)
-	g++ -o $@ main.cpp $^
+	g++ -o $@  $^ main.cpp
 
 %.o: %.cpp $(DEPS)
 	$(CPP) -c -o $@ $<
