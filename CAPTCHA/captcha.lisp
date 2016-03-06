@@ -78,9 +78,14 @@
          (end-question (op->end-question op)))
     (format nil "~A ~d ~A, ~A ~d ~A, ~a"
             start-verb
-            (nth (random 2) number1)
-            object op-verb
-            (nth (random 2) number2)
+            (if (< (car number1) 10)
+                (nth (random 2) number1)
+                (car number1))
+            object
+            op-verb
+            (if (< (car number2) 10)
+                (nth (random 2) number2)
+                (car number2))
             pronoun
             end-question)))
 
