@@ -1,24 +1,25 @@
 CPP=g++
-BUILD_DEST= build
-INCLUDE = include
-SRCS = $(wildcard *.cpp)
-MAINS = $(BUILD_DEST)/main.o $(BUILD_DEST)/test.o
-OBJS := $(patsubst %.cpp, $(BUILD_DEST)/%.o, $(SRCS))
+BUILD_DIR= build
+SRC_DIR = src
+INCLUDE_DIR = include
+SRCS = $(wildcard src/*.cpp)
+MAINS = $(BUILD_DIR)/main.o $(BUILD_DIR)/test.o
+OBJS := $(patsubst src/%.cpp, $(BUILD_DIR)/%.o, $(SRCS))
 OBJS := $(filter-out $(MAINS), $(OBJS))
 
-all: create_build_dir test main
+all: create_build_dir main test
 
 main: $(OBJS)
-	g++ -o $(BUILD_DEST)/$@ $(OBJS) main.cpp
+	g++ -I$(INCLUDE_DIR) -o $(BUILD_DIR)/$@ $(OBJS) src/main.cpp
 
 test: $(OBJS)
-	g++ -o $(BUILD_DEST)/$@ $(OBJS) test.cpp
+	g++ -I$(INCLUDE_DIR) -o $(BUILD_DIR)/$@ $(OBJS) test/test.cpp
 
 create_build_dir:
-	mkdir -p $(BUILD_DEST)
+	mkdir -p $(BUILD_DIR)
 
-$(BUILD_DEST)/%.o: %.cpp
-	$(CPP) -c  $< -o $@
+$(BUILD_DIR)/%.o: src/%.cpp
+	$(CPP) -I$(INCLUDE_DIR) -c  $< -o $@
 
 clean:
 	rm -rf build

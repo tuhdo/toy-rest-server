@@ -31,7 +31,6 @@ std::string Server::compose_response() {
         response = "HTTP/1.0 200 OK\r\n"
             "Content-Length: 100\r\n"
             "Content-Type: text/html\r\n\r\n"
-            "<!DOCTYPE html>\r\n\r\n"
             "<html><body>Question: "
             + result.substr(0, result.find("?") + 1)  +
             "<form method=\"post\" action=\"/answer\">"
