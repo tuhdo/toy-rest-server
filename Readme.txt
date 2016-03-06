@@ -13,3 +13,7 @@
   + Talk and retrieve the answer from Lisp server.
   + Respond the result to the client, either 200 OK for correct answer, or 400
     Bad Request for wrong answer.
+
+- All unit tests passed.
+
+- Tested on Fedora Linux 23 and OSX EL Captain version 10.11.14.
