@@ -44,8 +44,8 @@ public:
         this->raw_msg = raw_msg;
     }
 private:
-    std::string raw_msg;
-    std::string method;
-    std::string uri;
-    std::string answer;
+    std::string raw_msg; // the raw message converted from char string array
+    std::string method;  // GET, POST etc...
+    std::string uri;     // either /question or /answer in our app
+    std::string answer;  // hold user answer
 };

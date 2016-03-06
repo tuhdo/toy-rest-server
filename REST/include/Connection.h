@@ -14,7 +14,7 @@
 #define BUF_SIZE 4096
 
 // Represent a connection between two sockets.
-// Each class has a socket and is responsible for 
+// Each class has its socket and is responsible for starting and closing the socket.
 class Connection
 {
 public:
@@ -33,10 +33,11 @@ protected:
     struct sockaddr_in serv_addr;
 
     void error(const std::string &msg);
-// private:
-    // static void sigint_handler(int signo);
 };
 
+// Resprent a connection coming from the outside world to our web server.
+// This class is used by a server for accepting outside connections,
+// so it also holds another socket that represents a client.
 class IncomingConnection: public Connection
 {
 public:
@@ -53,12 +54,15 @@ public:
     int respond(const std::string &response);
     int close();
 private:
+    // only need one since the requirement doesn't demand to handle multiple-clients.
+    // However, we can turn it into a container if needed for multiple-clients.
     int client_socket;
     socklen_t cli_len;
     struct sockaddr_in cli_addr;
     HttpMessage recv_msg;
 };
 
+// Reprent a connection the web server connects to.
 class OutgoingConnection: public Connection
 {
 public:
