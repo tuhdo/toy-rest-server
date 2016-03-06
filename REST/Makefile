@@ -9,11 +9,11 @@ OBJS := $(filter-out $(MAINS), $(OBJS))
 
 all: create_build_dir main test
 
-main: $(OBJS)
+main: $(OBJS) src/main.cpp
 	g++ -I$(INCLUDE_DIR) -o $(BUILD_DIR)/$@ $(OBJS) src/main.cpp
 
-test: $(OBJS)
-	g++ -I$(INCLUDE_DIR) -o $(BUILD_DIR)/$@ $(OBJS) test/test.cpp
+test: $(OBJS) src/test/test.cpp
+	g++ -I$(INCLUDE_DIR) -o $(BUILD_DIR)/$@ $(OBJS) src/test/test.cpp
 
 create_build_dir:
 	mkdir -p $(BUILD_DIR)
