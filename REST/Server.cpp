@@ -56,6 +56,6 @@ std::string Server::compose_response() {
                 "<html><body><h1>Bad Answer</h1>"
                 "</body></html>";
     }
-    
+
     return response;
 }
