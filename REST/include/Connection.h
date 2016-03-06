@@ -35,7 +35,7 @@ protected:
     void error(const std::string &msg);
 };
 
-// Resprent a connection coming from the outside world to our web server.
+// Represent a connection coming from the outside world to our web server.
 // This class is used by a server for accepting outside connections,
 // so it also holds another socket that represents a client.
 class IncomingConnection: public Connection
@@ -62,7 +62,7 @@ private:
     HttpMessage recv_msg;
 };
 
-// Reprent a connection the web server connects to.
+// Represent a connection the web server connects to.
 class OutgoingConnection: public Connection
 {
 public:

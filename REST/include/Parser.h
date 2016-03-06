@@ -6,7 +6,7 @@ class HttpMessage;
 
 // Responsible for parsing HTML messages received from the client
 // It accepts a HttpMessage object with only raw content, then fills
-// the object with broken down information.
+// the object with parsed information.
 class Parser
 {
 public:
